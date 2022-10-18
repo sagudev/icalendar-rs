@@ -1,4 +1,5 @@
 use chrono::Duration;
+use std::ops::DerefMut;
 use std::{fmt, iter::FromIterator, mem, ops::Deref};
 
 use crate::{components::*, Parameter, Property};
@@ -226,9 +227,21 @@ impl Deref for Calendar {
     }
 }
 
+impl DerefMut for Calendar {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.components.deref_mut()
+    }
+}
+
 impl AsRef<[CalendarComponent]> for Calendar {
     fn as_ref(&self) -> &[CalendarComponent] {
         self.components.deref()
+    }
+}
+
+impl AsMut<[CalendarComponent]> for Calendar {
+    fn as_mut(&mut self) -> &mut [CalendarComponent] {
+        self.components.deref_mut()
     }
 }
 
